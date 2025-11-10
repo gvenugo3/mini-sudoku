@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Sudoku - 6x6 Puzzle Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Mini Sudoku</h1>
+            <p class="subtitle">Fill the 6×6 grid with numbers 1-6</p>
+        </header>
+
+        <div class="game-info">
+            <div class="info-item">
+                <span class="label">Difficulty:</span>
+                <select id="difficulty">
+                    <option value="easy">Easy</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
+            <div class="info-item">
+                <span class="label">Time:</span>
+                <span id="timer">00:00</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Mistakes:</span>
+                <span id="mistakes">0</span>
+            </div>
+        </div>
+
+        <div id="sudoku-grid" class="sudoku-grid"></div>
+
+        <div class="controls">
+            <button id="new-game-btn" class="btn btn-primary">New Game</button>
+            <button id="check-btn" class="btn btn-secondary">Check Solution</button>
+            <button id="hint-btn" class="btn btn-secondary">Hint</button>
+            <button id="solve-btn" class="btn btn-secondary">Solve</button>
+        </div>
+
+        <div class="rules">
+            <h3>How to Play</h3>
+            <ul>
+                <li>Fill each row with numbers 1-6 (no repeats)</li>
+                <li>Fill each column with numbers 1-6 (no repeats)</li>
+                <li>Fill each 2×3 box with numbers 1-6 (no repeats)</li>
+            </ul>
+        </div>
+
+        <div id="victory-message" class="victory-message hidden">
+            <div class="victory-content">
+                <h2>Congratulations!</h2>
+                <p>You solved the puzzle!</p>
+                <p>Time: <span id="final-time"></span></p>
+                <button id="play-again-btn" class="btn btn-primary">Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="sudoku.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

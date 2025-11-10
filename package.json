@@ -1,0 +1,17 @@
+{
+  "name": "mini-sudoku",
+  "version": "1.0.0",
+  "description": "6x6 Mini Sudoku Game",
+  "main": "index.html",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "keywords": ["sudoku", "puzzle", "game"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
+  }
+}
