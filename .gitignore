@@ -1,24 +1,34 @@
 # Dependencies
 node_modules/
 
-# Testing
-coverage/
+# Firebase config (sensitive)
+firebase-config.js
+
+# Build files
+dist/
 
 # OS files
 .DS_Store
 Thumbs.db
 
-# IDE files
+# IDE
 .vscode/
 .idea/
 *.swp
 *.swo
-*~
 
 # Logs
-*.log
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Environment files
+# Testing
+coverage/
+
+# Environment
 .env
 .env.local
+
+# Lock files (keep package-lock.json for consistency)
+# yarn.lock
+
