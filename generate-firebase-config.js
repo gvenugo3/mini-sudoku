@@ -47,7 +47,7 @@ function generateFirebaseConfig() {
   if (!env) {
     // Create a placeholder config for dev mode
     const placeholderConfig = `/**
- * Firebase Configuration (Placeholder)
+ * Application & Firebase Configuration (Placeholder)
  *
  * To enable Firebase features:
  * 1. Copy .env.example to .env
@@ -55,6 +55,10 @@ function generateFirebaseConfig() {
  * 3. Run: npm run build:config
  */
 
+// App Mode Configuration (defaults to 'dev')
+export const APP_MODE = "dev";
+
+// Firebase Configuration
 export const firebaseConfig = {
   apiKey: "YOUR_API_KEY",
   authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -90,18 +94,30 @@ export const firebaseConfig = {
     console.log('ℹ️  Creating placeholder config for now...\n');
   }
 
+  // Get app mode (default to 'dev')
+  const appMode = env.VITE_APP_MODE || 'dev';
+
+  // Validate app mode
+  if (appMode !== 'dev' && appMode !== 'production') {
+    console.warn(`⚠️  Invalid VITE_APP_MODE: "${appMode}". Using "dev" instead.`);
+  }
+
   // Generate the config file
   const configContent = `/**
- * Firebase Configuration
+ * Application & Firebase Configuration
  *
  * 🤖 AUTO-GENERATED FILE - DO NOT EDIT MANUALLY
  * This file is generated from .env by running: npm run build:config
  *
- * To update Firebase credentials:
+ * To update configuration:
  * 1. Edit the .env file
  * 2. Run: npm run build:config
  */
 
+// App Mode Configuration
+export const APP_MODE = "${appMode}";
+
+// Firebase Configuration
 export const firebaseConfig = {
   apiKey: "${env.VITE_FIREBASE_API_KEY || 'YOUR_API_KEY'}",
   authDomain: "${env.VITE_FIREBASE_AUTH_DOMAIN || 'YOUR_PROJECT_ID.firebaseapp.com'}",
@@ -117,9 +133,11 @@ export const firebaseConfig = {
 
   if (missingVars.length === 0) {
     console.log('✅ Successfully generated firebase-config.js from .env');
+    console.log(`🎯 App Mode: ${appMode}`);
     console.log('🔥 Firebase credentials loaded and ready!');
   } else {
     console.log('✅ Generated firebase-config.js (with placeholders)');
+    console.log(`🎯 App Mode: ${appMode}`);
   }
 }
 

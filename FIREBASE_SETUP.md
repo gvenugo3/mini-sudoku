@@ -23,9 +23,13 @@ cp .env.example .env
 
 ### 3. Fill in Your `.env` File
 
-Open `.env` and replace the placeholder values with your actual Firebase credentials:
+Open `.env` and configure the app mode and Firebase credentials:
 
 ```env
+# App Mode: 'dev' or 'production'
+VITE_APP_MODE=production
+
+# Firebase Configuration (only needed if VITE_APP_MODE=production)
 VITE_FIREBASE_API_KEY=AIzaSyABC123def456GHI789jklMNO012pqrSTU
 VITE_FIREBASE_AUTH_DOMAIN=mini-sudoku-12345.firebaseapp.com
 VITE_FIREBASE_PROJECT_ID=mini-sudoku-12345
@@ -33,6 +37,12 @@ VITE_FIREBASE_STORAGE_BUCKET=mini-sudoku-12345.appspot.com
 VITE_FIREBASE_MESSAGING_SENDER_ID=123456789012
 VITE_FIREBASE_APP_ID=1:123456789012:web:abc123def456ghi789
 VITE_FIREBASE_MEASUREMENT_ID=G-ABCDEFGHIJ
+```
+
+**For Development (no Firebase needed):**
+```env
+VITE_APP_MODE=dev
+# Firebase variables not required in dev mode
 ```
 
 ### 4. Generate Firebase Config
@@ -99,6 +109,7 @@ Both are already in `.gitignore` for your safety!
    Go to your deployment platform's dashboard and add these environment variables:
 
    ```
+   VITE_APP_MODE=production
    VITE_FIREBASE_API_KEY=your_actual_api_key
    VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
    VITE_FIREBASE_PROJECT_ID=your-project-id
@@ -214,7 +225,18 @@ Click **Publish** to save.
 
 **Solution:**
 1. Make sure `.env` file exists (copy from `.env.example`)
-2. Fill in your actual Firebase credentials
+2. Set `VITE_APP_MODE=production` if you want Firebase features
+3. Fill in your actual Firebase credentials
+4. Run `npm run build:config`
+5. Restart the server
+
+### App running in wrong mode
+
+**Problem:** App is in production mode but you want dev mode (or vice versa).
+
+**Solution:**
+1. Open `.env` file
+2. Change `VITE_APP_MODE=dev` or `VITE_APP_MODE=production`
 3. Run `npm run build:config`
 4. Restart the server
 
@@ -253,17 +275,23 @@ Click **Publish** to save.
 ## ℹ️ How It Works
 
 1. **Development:**
-   - You edit `.env` with your credentials
+   - You edit `.env` with your app mode and credentials
    - Run `npm run build:config` to generate `firebase-config.js`
-   - The app imports and uses `firebase-config.js`
+   - The generated file exports both `APP_MODE` and `firebaseConfig`
+   - The app imports and uses these values from `firebase-config.js`
 
 2. **Deployment:**
-   - Platform reads environment variables from settings
+   - Platform reads environment variables from settings (including `VITE_APP_MODE`)
    - Build command runs `npm run build:config`
    - Script generates `firebase-config.js` from env vars
-   - App is deployed with generated config
+   - App is deployed with generated config in the correct mode
 
-3. **Security:**
+3. **Mode Switching:**
+   - Set `VITE_APP_MODE=dev` for local development (no Firebase needed)
+   - Set `VITE_APP_MODE=production` for full features with Firebase
+   - The mode is automatically read from `.env` and baked into the build
+
+4. **Security:**
    - `.env` is gitignored (never committed)
    - `firebase-config.js` is gitignored (generated on-demand)
    - Only `.env.example` with placeholders is committed
