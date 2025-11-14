@@ -6,10 +6,13 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
+    "build:config": "node generate-firebase-config.js",
     "build:css": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
     "build:css:prod": "tailwindcss -i ./src/input.css -o ./dist/output.css --minify",
-    "dev": "npm run build:css",
-    "start": "python3 -m http.server 8000"
+    "build": "npm run build:config && npm run build:css:prod",
+    "dev": "npm run build:config && npm run build:css",
+    "start": "npm run build:config && python3 -m http.server 8000",
+    "prestart": "npm run build:config"
   },
   "keywords": [
     "sudoku",

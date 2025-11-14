@@ -28,6 +28,7 @@ coverage/
 # Environment
 .env
 .env.local
+!.env.example
 
 # Lock files (keep package-lock.json for consistency)
 # yarn.lock
