@@ -2,10 +2,11 @@
 node_modules/
 
 # Firebase config (sensitive)
-firebase-config.js
+# Note: Now using .env.local for Firebase credentials
 
 # Build files
 dist/
+dist-build/
 
 # OS files
 .DS_Store
@@ -32,3 +33,5 @@ coverage/
 # Lock files (keep package-lock.json for consistency)
 # yarn.lock
 
+# Generated config files (no longer needed with Vite)
+config.js

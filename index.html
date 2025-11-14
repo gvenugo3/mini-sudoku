@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mini Sudoku - 6x6 Puzzle Game</title>
     <link rel="stylesheet" href="./dist/output.css">
-    <script src="config.js"></script>
 </head>
 <body class="h-full bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 dark:from-gray-900 dark:via-purple-900 dark:to-indigo-900">
     
@@ -104,7 +103,7 @@
     <div class="min-h-screen h-screen flex flex-col lg:flex-row gap-4 md:gap-6 p-2 sm:p-4 lg:p-6 overflow-hidden">
         
         <!-- Sidebar - Dashboard & Stats (Production only) -->
-        <aside id="dashboard-sidebar" class="prod-only fixed lg:relative top-0 left-0 h-full w-80 max-w-[85vw] lg:w-72 xl:w-80 flex-shrink-0 space-y-3 md:space-y-4 lg:space-y-3 overflow-y-auto bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 dark:from-gray-900 dark:via-purple-900 dark:to-indigo-900 lg:bg-none p-3 lg:p-0 transition-transform duration-300 ease-in-out z-[50] lg:z-auto" style="transform: translateX(-100%);">
+        <aside id="dashboard-sidebar" class="prod-only fixed lg:relative top-0 left-0 h-full w-80 max-w-[85vw] lg:w-72 xl:w-80 flex-shrink-0 space-y-3 md:space-y-4 lg:space-y-3 overflow-y-auto bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 dark:from-gray-900 dark:via-purple-900 dark:to-indigo-900 lg:bg-none p-3 lg:p-0 transition-transform duration-300 ease-in-out z-[50] lg:z-auto">
             <!-- Close Button (Mobile Only) -->
             <button id="close-sidebar" class="lg:hidden absolute top-4 right-4 p-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-all">
                 <svg class="w-5 h-5 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -389,44 +388,68 @@
     </div>
 
     <!-- Scripts -->
-    <script src="sudoku.js"></script>
+    <script type="module" src="sudoku.js"></script>
     <script type="module" src="toast.js"></script>
     <script type="module" src="auth.js"></script>
     <script type="module" src="app.js"></script>
     
-    <!-- Mode Configuration Script -->
-    <script>
-        // Initialize app based on CONFIG.MODE
-        (function() {
-            const isDev = CONFIG && CONFIG.MODE === 'dev';
+    <!-- Mode Configuration Script - UI Adjustments -->
+    <script type="module">
+        // Set APP_MODE from environment and apply UI changes
+        window.APP_MODE = import.meta.env.VITE_APP_MODE || 'dev';
+        const isDev = window.APP_MODE === 'dev';
+        console.log(isDev ? '🔧 Running in DEV mode' : '🚀 Running in PRODUCTION mode');
             
-            if (isDev) {
-                // Dev mode: Hide auth modal and dashboard
-                console.log('🔧 Running in DEV mode - Auth and Dashboard disabled');
-                
-                // Hide all production-only elements
-                document.querySelectorAll('.prod-only').forEach(el => {
-                    el.style.display = 'none';
-                });
-                
-                // Hide auth modal
-                const authModal = document.getElementById('auth-modal');
-                if (authModal) authModal.style.display = 'none';
-                
-                // Adjust main container to be centered (no sidebar)
-                const mainArea = document.querySelector('main');
-                if (mainArea) {
-                    mainArea.style.maxWidth = '1200px';
-                    mainArea.style.margin = '0 auto';
-                }
-            } else {
-                // Production mode: Show all features
-                console.log('🚀 Running in PRODUCTION mode - Full features enabled');
+        
+        if (isDev) {
+            // Dev mode: Show only game section, full screen
+            console.log('📱 Dev Mode: Optimizing for full-screen game experience');
+            
+            // Hide all production-only elements
+            document.querySelectorAll('.prod-only').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            // Hide auth modal
+            const authModal = document.getElementById('auth-modal');
+            if (authModal) authModal.style.display = 'none';
+            
+            // Get the main container and main game area
+            const mainContainer = document.querySelector('.min-h-screen.flex');
+            const mainArea = document.querySelector('main');
+            const sidebar = document.getElementById('dashboard-sidebar');
+            
+            // Hide sidebar completely
+            if (sidebar) {
+                sidebar.style.display = 'none';
             }
             
-            // Store mode globally for other scripts to check
-            window.APP_MODE = isDev ? 'dev' : 'production';
-        })();
+            // Make main container full screen
+            if (mainContainer) {
+                mainContainer.style.display = 'flex';
+                mainContainer.style.flexDirection = 'column';
+                mainContainer.style.padding = '0';
+                mainContainer.style.gap = '0';
+                mainContainer.style.height = '100vh';
+                mainContainer.style.overflow = 'hidden';
+            }
+            
+            // Make main game area take full screen
+            if (mainArea) {
+                mainArea.style.maxWidth = '100%';
+                mainArea.style.width = '100%';
+                mainArea.style.height = '100vh';
+                mainArea.style.margin = '0';
+                mainArea.style.padding = '1rem';
+                mainArea.style.overflow = 'auto';
+                mainArea.style.display = 'flex';
+                mainArea.style.flexDirection = 'column';
+                mainArea.style.justifyContent = 'center';
+            }
+        } else {
+            // Production mode: Show all features
+            console.log('📱 Production Mode: Full dashboard enabled');
+        }
     </script>
     
     <!-- Mobile Sidebar Toggle Script (Production only) -->
@@ -487,11 +510,11 @@
                 }
             });
 
-            // Handle window resize
-            window.addEventListener('resize', initSidebar);
-            
             // Initialize on page load
             initSidebar();
+            
+            // Handle window resize
+            window.addEventListener('resize', initSidebar);
         }
     </script>
 </body>
