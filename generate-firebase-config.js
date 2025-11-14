@@ -68,6 +68,12 @@ export const firebaseConfig = {
   appId: "YOUR_APP_ID",
   measurementId: "YOUR_MEASUREMENT_ID"
 };
+
+// Set global APP_MODE for browser compatibility
+if (typeof window !== 'undefined') {
+  window.APP_MODE = APP_MODE;
+  console.log(\`🎯 App Mode: \${APP_MODE}\`);
+}
 `;
 
     fs.writeFileSync(path.join(__dirname, 'firebase-config.js'), placeholderConfig);
@@ -127,6 +133,12 @@ export const firebaseConfig = {
   appId: "${env.VITE_FIREBASE_APP_ID || 'YOUR_APP_ID'}",
   measurementId: "${env.VITE_FIREBASE_MEASUREMENT_ID || 'YOUR_MEASUREMENT_ID'}"
 };
+
+// Set global APP_MODE for browser compatibility
+if (typeof window !== 'undefined') {
+  window.APP_MODE = APP_MODE;
+  console.log(\`🎯 App Mode: \${APP_MODE}\`);
+}
 `;
 
   fs.writeFileSync(path.join(__dirname, 'firebase-config.js'), configContent);

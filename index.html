@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mini Sudoku - 6x6 Puzzle Game</title>
     <link rel="stylesheet" href="./dist/output.css">
-    <script src="config.js"></script>
+    <script type="module" src="firebase-config.js"></script>
 </head>
 <body class="h-full bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 dark:from-gray-900 dark:via-purple-900 dark:to-indigo-900">
     
@@ -395,24 +395,26 @@
     <script type="module" src="app.js"></script>
     
     <!-- Mode Configuration Script -->
-    <script>
-        // Initialize app based on CONFIG.MODE
+    <script type="module">
+        // Initialize app based on APP_MODE (set by firebase-config.js)
+        import { APP_MODE } from './firebase-config.js';
+
         (function() {
-            const isDev = CONFIG && CONFIG.MODE === 'dev';
-            
+            const isDev = APP_MODE === 'dev';
+
             if (isDev) {
                 // Dev mode: Hide auth modal and dashboard
                 console.log('🔧 Running in DEV mode - Auth and Dashboard disabled');
-                
+
                 // Hide all production-only elements
                 document.querySelectorAll('.prod-only').forEach(el => {
                     el.style.display = 'none';
                 });
-                
+
                 // Hide auth modal
                 const authModal = document.getElementById('auth-modal');
                 if (authModal) authModal.style.display = 'none';
-                
+
                 // Adjust main container to be centered (no sidebar)
                 const mainArea = document.querySelector('main');
                 if (mainArea) {
@@ -423,9 +425,6 @@
                 // Production mode: Show all features
                 console.log('🚀 Running in PRODUCTION mode - Full features enabled');
             }
-            
-            // Store mode globally for other scripts to check
-            window.APP_MODE = isDev ? 'dev' : 'production';
         })();
     </script>
     
