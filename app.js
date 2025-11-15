@@ -3,6 +3,7 @@
  * Handles UI interactions, game state, and cloud synchronization
  */
 
+import { Sudoku } from './sudoku.js';
 import authManager from './auth.js';
 import toast from './toast.js';
 

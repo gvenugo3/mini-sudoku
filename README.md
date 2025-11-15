@@ -264,7 +264,34 @@ This compiles Tailwind CSS with all necessary utility classes into `dist/output.
 npm run build:css
 ```
 
-#### 4. Start Local Server
+#### 4. Configure App Mode (Optional)
+
+By default, the app runs in **dev mode**. To change modes:
+
+1. **Create `.env.local`**:
+
+   ```bash
+   cp .env.local.example .env.local
+   ```
+
+2. **Edit `.env.local`** and set:
+
+   ```
+   APP_MODE=dev          # for dev mode (game only)
+   # or
+   APP_MODE=production   # for production mode (full app)
+   ```
+
+➡️ See [Dev vs Prod Mode Switching](#-dev-vs-prod-mode-switching) below
+
+3. **Build config** (auto-runs with `npm start`):
+   ```bash
+   npm run build:config
+   ```
+
+**⚠️ Note:** Only edit `.env.local`, never edit `config.js` directly (it's auto-generated).
+
+#### 5. Start Local Server
 
 **Option A: Python 3 (Built-in)**
 
@@ -273,6 +300,8 @@ npm start
 # Or manually:
 python3 -m http.server 8000
 ```
+
+The `npm start` command automatically runs `build:config` before starting the server.
 
 **Option B: Node.js http-server**
 
@@ -285,7 +314,7 @@ npx http-server -p 8000
 - Install "Live Server" extension
 - Right-click `index.html` → "Open with Live Server"
 
-#### 5. Open in Browser
+#### 6. Open in Browser
 
 Navigate to:
 
@@ -300,10 +329,12 @@ http://localhost:8000
 You should see:
 
 - ✅ Mini Sudoku game loads
-- ✅ Console message: "🔧 Running in DEV mode - Auth and Dashboard disabled"
-- ✅ Game centered on screen (no sidebar)
+- ✅ Console: `🔧 Running in DEV mode`
+- ✅ Game spans full screen (no sidebar)
+- ✅ No dashboard or authentication UI
 - ✅ All game functions work (new game, check, hint, solve)
 - ✅ Theme toggle works
+- ✅ Hot reload works (edit files and see instant changes)
 
 ---
 
@@ -315,14 +346,16 @@ You should see:
 # Install dependencies
 npm install
 
-# Build CSS (production)
-npm run build:css:prod
-
-# Build CSS (watch mode for development)
-npm run build:css
-
-# Start local server
+# Start development server (with hot reload)
+npm run dev
+# or
 npm start
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
 
 # Run tests
 npm test
@@ -338,21 +371,25 @@ mini-sudoku/
 ├── src/
 │   └── input.css              # Tailwind source CSS
 ├── dist/
-│   └── output.css             # Compiled CSS output
+│   └── output.css             # Compiled CSS (for non-Vite builds)
+├── dist-build/                # Vite production build output
 ├── __tests__/
 │   └── sudoku.test.js         # Jest unit tests
-├── config.js                  # Mode configuration (dev/production)
+├── .env.local.example         # Template for environment variables
+├── .env.local                 # Your environment config (create this, gitignored)
 ├── index.html                 # Main HTML file
 ├── app.js                     # Game controller & UI logic
-├── sudoku.js                  # Puzzle generation & validation
-├── auth.js                    # Firebase authentication manager
-├── toast.js                   # Toast notification system
-├── firebase-config.js         # Firebase credentials (create from template)
+├── sudoku.js                  # Puzzle generation & validation (ES module)
+├── auth.js                    # Firebase authentication manager (ES module)
+├── toast.js                   # Toast notification system (ES module)
+├── firebase-config.js         # Firebase initialization (reads from .env.local)
+├── vite.config.js             # Vite configuration
 ├── tailwind.config.js         # Tailwind configuration
 ├── postcss.config.js          # PostCSS configuration
 ├── package.json               # Dependencies and scripts
 ├── .gitignore                 # Git ignore rules
 ├── CHANGELOG.md               # Version history
+├── build-config.js            # DEPRECATED - no longer used
 └── README.md                  # This file
 ```
 
@@ -436,7 +473,38 @@ python3 -m http.server 3000
 
 ## 🔄 Dev vs Prod Mode Switching
 
-The app uses a simple configuration system to toggle between development and production modes.
+The app uses **Vite environment variables** to switch between development and production modes.
+
+### ⚙️ Configuration Workflow
+
+**⚠️ IMPORTANT: All configuration is in `.env.local` file!**
+
+1. **Edit `.env.local`** - Change `VITE_APP_MODE` value
+2. **Restart dev server** - Stop (`Ctrl+C`) and run `npm run dev` again
+3. **Vite reads the environment** - Injects variables at build time
+
+**All configuration in ONE file:** `.env.local`
+
+### Quick Reference
+
+| File                 | Purpose                        | Edit?                  |
+| -------------------- | ------------------------------ | ---------------------- |
+| `.env.local`         | Your environment variables     | ✅ **YES** - Edit this |
+| `.env.local.example` | Template for `.env.local`      | ❌ No - Just copy it   |
+| `firebase-config.js` | Firebase init (reads from env) | ❌ No - Auto-reads env |
+| `vite.config.js`     | Vite bundler config            | ❌ No - Unless needed  |
+
+### How It Works
+
+```
+.env.local (you edit this)
+    ↓
+Vite reads environment variables
+    ↓
+import.meta.env.VITE_APP_MODE available in code
+    ↓
+UI adjusts based on mode
+```
 
 ### Current Mode: Development (Default)
 
@@ -444,17 +512,35 @@ By default, the app runs in **development mode**, which provides a clean Sudoku 
 
 ### Switching to Production Mode
 
-#### Step 1: Edit Configuration
+#### Step 1: Configure Environment Variables
 
-Open `config.js` and change the MODE variable:
+**⚠️ All configuration happens in `.env.local` - Firebase credentials are NEVER in code!**
 
-```javascript
-const CONFIG = {
-  MODE: "production", // Changed from 'dev'
-};
+1. **Edit `.env.local`** and update:
+
+```env
+# Set mode to production
+VITE_APP_MODE=production
+
+# Add your Firebase credentials (get from Firebase Console)
+VITE_FIREBASE_API_KEY=your_api_key_here
+VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your-project-id
+VITE_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
 ```
 
-#### Step 2: Create Firebase Configuration
+2. **Restart the dev server:**
+   ```bash
+   # Stop current server (Ctrl+C), then:
+   npm run dev
+   ```
+
+**⚠️ Important:** Vite only reads `.env.local` on startup. You must restart the server after changing environment variables.
+
+#### Step 2: Setup Firebase Project
 
 **2a. Create Firebase Project**
 
@@ -471,45 +557,41 @@ const CONFIG = {
    - Enable "Email/Password"
    - Enable "Google" (optional)
 
-2. **Firestore**:
+2. **Firestore Database**:
    - Go to Firestore Database
    - Click "Create database"
    - Start in production mode
    - Choose a location
 
-**2c. Get Configuration**
+**2c. Get Your Credentials**
 
-1. Go to Project Settings → General
-2. Scroll to "Your apps"
-3. Click the web app
-4. Copy the Firebase configuration object
+1. Go to **Project Settings** → **General**
+2. Scroll to **"Your apps"**
+3. Click your **Web app**
+4. Copy the **configuration values**
 
-**2d. Create `firebase-config.js`**
+**2d. Add to `.env.local`**
 
-Create a new file named `firebase-config.js` in the root directory:
+Paste your Firebase credentials into `.env.local`:
 
-```javascript
-/**
- * Firebase Configuration
- *
- * Get these credentials from:
- * Firebase Console → Project Settings → General → Your apps → Web app
- *
- * SECURITY: This file is gitignored. Never commit credentials to version control.
- */
+```env
+VITE_APP_MODE=production
 
-export const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
-  measurementId: "YOUR_MEASUREMENT_ID", // Optional
-};
+# Your actual Firebase credentials
+VITE_FIREBASE_API_KEY=AIzaSyC...
+VITE_FIREBASE_AUTH_DOMAIN=your-app.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your-app
+VITE_FIREBASE_STORAGE_BUCKET=your-app.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=123456789
+VITE_FIREBASE_APP_ID=1:123456789:web:abc123
+VITE_FIREBASE_MEASUREMENT_ID=G-ABCD123
 ```
 
-Replace all `YOUR_*` values with your actual Firebase credentials.
+**⚠️ Security:**
+
+- `.env.local` is in `.gitignore` - your credentials are safe
+- NEVER commit credentials to version control
+- Firebase credentials stay in `.env.local` ONLY
 
 #### Step 3: Configure Firestore Security Rules
 
@@ -534,19 +616,28 @@ service cloud.firestore {
 
 Click "Publish" to save the rules.
 
-#### Step 4: Refresh Application
+#### Step 4: Restart and Test
 
-Hard refresh your browser:
+**Restart the dev server:**
+
+```bash
+# Stop with Ctrl+C, then:
+npm run dev
+```
+
+**Check the console:**
+
+```
+🚀 Running in PRODUCTION mode
+🔥 Firebase app initialized
+✅ Firebase initialized successfully
+📱 Production Mode: Full dashboard enabled
+```
+
+**Hard refresh browser:**
 
 - **Mac**: `Cmd + Shift + R`
 - **Windows/Linux**: `Ctrl + Shift + F5`
-
-Check the console for:
-
-```
-🚀 Running in PRODUCTION mode - Full features enabled
-✅ Firebase initialized successfully
-```
 
 ### Production Mode Verification
 
@@ -565,27 +656,75 @@ After switching, verify these features work:
 
 To return to development mode:
 
-1. Open `config.js`
-2. Change `MODE: "production"` to `MODE: "dev"`
-3. Refresh browser
+1. **Edit `.env.local`** and change:
 
-The dashboard and authentication will be hidden again.
+   ```env
+   VITE_APP_MODE=dev
+   ```
+
+2. **Restart dev server:**
+
+   ```bash
+   # Stop with Ctrl+C, then:
+   npm run dev
+   ```
+
+3. **Hard refresh browser** (`Cmd + Shift + R`)
+
+**Console should show:**
+
+```
+🔧 Running in DEV mode
+📱 Dev Mode: Optimizing for full-screen game experience
+```
+
+The dashboard and authentication will be completely hidden.
+
+**⚠️ Remember:** Restart the dev server whenever you change `.env.local`!
 
 ### Mode Comparison Table
 
-| Feature               | Dev Mode                | Prod Mode   |
-| --------------------- | ----------------------- | ----------- |
-| **Sudoku Game**       | ✅ Full                 | ✅ Full     |
-| **Timer & Mistakes**  | ✅ Yes                  | ✅ Yes      |
-| **Theme Toggle**      | ✅ Yes                  | ✅ Yes      |
-| **Number Pad**        | ✅ Yes                  | ✅ Yes      |
-| **Authentication**    | ❌ No                   | ✅ Yes      |
-| **Dashboard**         | ❌ No                   | ✅ Yes      |
-| **Statistics**        | ❌ No                   | ✅ Yes      |
-| **Game History**      | ❌ No                   | ✅ Yes      |
-| **Cloud Sync**        | ❌ No                   | ✅ Yes      |
-| **Firebase Setup**    | ❌ Not Required         | ✅ Required |
-| **Internet Required** | ❌ No (offline-capable) | ✅ Yes      |
+| Feature               | Dev Mode                    | Prod Mode               |
+| --------------------- | --------------------------- | ----------------------- |
+| **Sudoku Game**       | ✅ Full screen, centered    | ✅ Full                 |
+| **Timer & Mistakes**  | ✅ Yes                      | ✅ Yes                  |
+| **Theme Toggle**      | ✅ Yes                      | ✅ Yes                  |
+| **Number Pad**        | ✅ Yes                      | ✅ Yes                  |
+| **Layout**            | 🎮 Game only, full viewport | 📊 Game + Dashboard     |
+| **Authentication**    | ❌ No                       | ✅ Email + Google OAuth |
+| **Dashboard**         | ❌ Hidden                   | ✅ Sidebar with stats   |
+| **Statistics**        | ❌ No                       | ✅ Yes                  |
+| **Game History**      | ❌ No                       | ✅ Yes                  |
+| **Cloud Sync**        | ❌ No                       | ✅ Yes                  |
+| **Firebase Required** | ❌ No setup needed          | ✅ Yes (in .env.local)  |
+| **Setup Time**        | ⚡ Instant (30 seconds)     | ⏱️ 5-10 min             |
+| **Hot Reload**        | ✅ Yes (Vite)               | ✅ Yes (Vite)           |
+| **Best For**          | Pure gameplay, local dev    | Full experience         |
+
+### Environment Variables Reference
+
+**All variables go in `.env.local` file:**
+
+```env
+# Required: App Mode
+VITE_APP_MODE=dev                                    # or 'production'
+
+# Required for Production Mode: Firebase Credentials
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your-project-id
+VITE_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
+```
+
+**Important Notes:**
+
+- All variables must have `VITE_` prefix to be accessible in the browser
+- Restart dev server after changing `.env.local`
+- `.env.local` is gitignored - safe for credentials
+- Never commit credentials to version control
 
 ---
 

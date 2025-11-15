@@ -2,7 +2,7 @@
  * Sudoku Game Logic for 6x6 grid
  * Grid is divided into six 2x3 boxes
  */
-class Sudoku {
+export class Sudoku {
   constructor() {
     this.board = this.createEmptyBoard();
     this.solution = null;
