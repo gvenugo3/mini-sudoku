@@ -220,5 +220,164 @@ describe('Sudoku Game Logic', () => {
       expect(hint.col).toBe(0);
       expect(hint.value).toBe(1);
     });
+
+    test('should return null for hint when puzzle is complete', () => {
+      const completePuzzle = [
+        [1, 2, 3, 4, 5, 6],
+        [4, 5, 6, 1, 2, 3],
+        [2, 3, 1, 5, 6, 4],
+        [5, 6, 4, 2, 3, 1],
+        [3, 1, 2, 6, 4, 5],
+        [6, 4, 5, 3, 1, 2]
+      ];
+      sudoku.board = JSON.parse(JSON.stringify(completePuzzle));
+      sudoku.solution = JSON.parse(JSON.stringify(completePuzzle));
+      const hint = sudoku.getHint();
+      expect(hint).toBeNull();
+    });
+
+    test('should shuffle array randomly', () => {
+      const original = [1, 2, 3, 4, 5, 6];
+      const shuffled = sudoku.shuffle(original);
+
+      // Should have same elements
+      expect(shuffled.sort()).toEqual(original.sort());
+
+      // Should be same length
+      expect(shuffled.length).toBe(original.length);
+
+      // Original array should not be modified
+      expect(original).toEqual([1, 2, 3, 4, 5, 6]);
+    });
+
+    test('should create empty board', () => {
+      const board = sudoku.createEmptyBoard();
+      expect(board.length).toBe(6);
+      expect(board[0].length).toBe(6);
+
+      // All cells should be 0
+      for (let i = 0; i < 6; i++) {
+        for (let j = 0; j < 6; j++) {
+          expect(board[i][j]).toBe(0);
+        }
+      }
+    });
+  });
+
+  describe('Current State Validation', () => {
+    test('should validate partial board with correct entries', () => {
+      const partialBoard = [
+        [1, 2, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0]
+      ];
+      sudoku.board = partialBoard;
+      expect(sudoku.isCurrentStateValid()).toBe(true);
+    });
+
+    test('should invalidate partial board with conflicts', () => {
+      const invalidPartialBoard = [
+        [1, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0]
+      ];
+      sudoku.board = invalidPartialBoard;
+      expect(sudoku.isCurrentStateValid()).toBe(false);
+    });
+
+    test('should validate empty board', () => {
+      const emptyBoard = sudoku.createEmptyBoard();
+      sudoku.board = emptyBoard;
+      expect(sudoku.isCurrentStateValid()).toBe(true);
+    });
+  });
+
+  describe('Edge Cases', () => {
+    test('should handle box boundary validations correctly', () => {
+      const board = [
+        [1, 2, 3, 0, 0, 0],
+        [4, 5, 6, 0, 0, 0],
+        [0, 0, 0, 1, 2, 3],
+        [0, 0, 0, 4, 5, 6],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0]
+      ];
+      sudoku.board = board;
+
+      // Cannot place 1 in position [0,3] (same row as another 1)
+      expect(sudoku.isValidPlacement(0, 3, 1)).toBe(false);
+
+      // Can place 2 in position [4,0] (valid placement)
+      expect(sudoku.isValidPlacement(4, 0, 2)).toBe(true);
+    });
+
+    test('should validate placement at same position correctly', () => {
+      const board = sudoku.createEmptyBoard();
+      board[0][0] = 1;
+      sudoku.board = board;
+
+      // Should allow placing 1 at same position (for validation)
+      expect(sudoku.isValidPlacement(0, 0, 1)).toBe(true);
+    });
+
+    test('should check all 2x3 boxes correctly', () => {
+      const board = [
+        [1, 2, 3, 4, 5, 6],
+        [4, 5, 6, 1, 2, 3],
+        [2, 3, 1, 5, 6, 4],
+        [5, 6, 4, 2, 3, 1],
+        [3, 1, 2, 6, 4, 5],
+        [6, 4, 5, 3, 1, 2]
+      ];
+      sudoku.board = board;
+
+      // isValidBoard should check all 6 boxes (3 rows × 2 cols of boxes)
+      expect(sudoku.isValidBoard()).toBe(true);
+    });
+
+    test('should detect invalid box in bottom-right', () => {
+      const invalidBoard = [
+        [1, 2, 3, 4, 5, 6],
+        [4, 5, 6, 1, 2, 3],
+        [2, 3, 1, 5, 6, 4],
+        [5, 6, 4, 2, 3, 1],
+        [3, 1, 2, 6, 4, 5],
+        [6, 4, 5, 3, 1, 1]  // Duplicate 1 in bottom-right box
+      ];
+      sudoku.board = invalidBoard;
+      expect(sudoku.isValidBoard()).toBe(false);
+    });
+
+    test('should handle incomplete board in isValidBoard', () => {
+      const incompleteBoard = [
+        [1, 2, 3, 4, 5, 0],
+        [4, 5, 6, 1, 2, 3],
+        [2, 3, 1, 5, 6, 4],
+        [5, 6, 4, 2, 3, 1],
+        [3, 1, 2, 6, 4, 5],
+        [6, 4, 5, 3, 1, 2]
+      ];
+      sudoku.board = incompleteBoard;
+      expect(sudoku.isValidBoard()).toBe(false);
+    });
+
+    test('should detect out of range numbers', () => {
+      const invalidRangeBoard = [
+        [1, 2, 3, 4, 5, 7],  // 7 is out of range
+        [4, 5, 6, 1, 2, 3],
+        [2, 3, 1, 5, 6, 4],
+        [5, 6, 4, 2, 3, 1],
+        [3, 1, 2, 6, 4, 5],
+        [6, 4, 5, 3, 1, 2]
+      ];
+      sudoku.board = invalidRangeBoard;
+      expect(sudoku.isValidBoard()).toBe(false);
+    });
   });
 });
