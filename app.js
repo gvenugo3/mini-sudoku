@@ -73,9 +73,6 @@ class SudokuGame {
     this.statsCard = document.getElementById('stats-card');
     this.historyCard = document.getElementById('history-card');
     this.historyList = document.getElementById('history-list');
-    
-    // Theme toggle
-    this.themeToggle = document.getElementById('theme-toggle');
   }
 
   /**
@@ -135,9 +132,6 @@ class SudokuGame {
     this.toggleAuthFormBtn.addEventListener('click', () => this.toggleAuthForm());
     this.googleSignInBtn.addEventListener('click', () => this.handleGoogleSignIn());
     this.signOutBtn.addEventListener('click', () => this.handleSignOut());
-
-    // Theme toggle
-    this.themeToggle.addEventListener('click', () => this.toggleTheme());
   }
 
   /**
@@ -151,21 +145,6 @@ class SudokuGame {
     }
   }
 
-  /**
-   * Toggle theme
-   */
-  toggleTheme() {
-    this.isDarkMode = !this.isDarkMode;
-    localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
-    
-    if (this.isDarkMode) {
-      document.documentElement.classList.add('dark');
-      toast.success('Dark mode enabled');
-    } else {
-      document.documentElement.classList.remove('dark');
-      toast.success('Light mode enabled');
-    }
-  }
 
   /**
    * Setup Firebase authentication
