@@ -9,7 +9,9 @@
     "preview": "vite preview",
     "start": "vite",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:ci": "jest --coverage --coverageReporters=json-summary --coverageReporters=text --coverageReporters=lcov --ci"
   },
   "keywords": [
     "sudoku",
