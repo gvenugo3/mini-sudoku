@@ -10,8 +10,6 @@
 
 **A modern, responsive 6×6 Sudoku game with dual-mode architecture: simple local gameplay or full-featured cloud-powered experience.**
 
-[Features](#-features) • [How to Play](#-how-to-play) • [Installation](#-installation--setup) • [Dev vs Prod](#-dev-vs-prod-mode-switching) • [Contributing](#-contributing)
-
 </div>
 
 ---
@@ -28,7 +26,7 @@ Built with vanilla JavaScript and Tailwind CSS v4, the game is designed to be ea
 ### 🎯 Key Highlights
 
 - **Zero Setup Required** - Clone and play immediately in dev mode
-- **Dual-Mode Architecture** - Switch between local-only and cloud-powered with one variable
+- **Dual-Mode Architecture** - Switch between local-only and cloud-powered with one environment variable
 - **Modern UI/UX** - Beautiful gradients, dark mode, smooth animations, responsive design
 - **Firebase Integration** - Optional authentication, cloud storage, and real-time sync
 - **Mobile-Friendly** - Touch-optimized controls and responsive layout
@@ -37,147 +35,21 @@ Built with vanilla JavaScript and Tailwind CSS v4, the game is designed to be ea
 
 ---
 
-## ✨ Features
+## 🎲 Game Mechanics
 
-### 🎲 Game Mechanics
+### Difficulty Levels
 
-- **Three Difficulty Levels**
+- **Easy**: 14 cells removed (~39% empty), perfect for beginners
+- **Medium**: 18 cells removed (~50% empty), balanced challenge
+- **Hard**: 22 cells removed (~61% empty), brain-teaser mode
 
-  - **Easy**: 14 cells removed, perfect for beginners
-  - **Medium**: 18 cells removed, balanced challenge
-  - **Hard**: 22 cells removed, brain-teaser mode
+### Puzzle Generation
 
-- **Smart Puzzle Generation**
+- Backtracking algorithm ensures solvable puzzles
+- Randomized patterns for unique games
+- Proper 2×3 box validation (6 boxes total in 6×6 grid)
 
-  - Backtracking algorithm ensures solvable puzzles
-  - Randomized patterns for unique games
-  - Proper 2×3 box validation
-
-- **Real-Time Validation**
-
-  - Instant feedback on incorrect moves
-  - Visual highlighting of conflicts
-  - Mistake counter to track errors
-
-- **Game Actions**
-  - **New Game**: Fresh puzzle with confirmation
-  - **Check**: Validate current solution
-  - **Hint**: Reveal one correct cell
-  - **Solve**: Auto-complete puzzle (for learning)
-
-### 👤 Player Features
-
-- **Input Methods**
-
-  - Click/tap to select cells
-  - Keyboard input (1-6, Backspace, Delete)
-  - Touch-optimized number pad for mobile
-  - Erase button with visual feedback
-
-- **Visual Feedback**
-
-  - Cell selection highlighting
-  - Initial cells marked with distinct styling
-  - User-entered numbers in accent color
-  - Proper 2×3 box borders with bold lines
-
-- **Performance Tracking**
-
-  - Built-in timer from game start
-  - Mistake counter
-  - Victory modal with statistics
-  - Personal best times (Production mode)
-
-- **Persistence** (Production Mode Only)
-  - Game history across sessions
-  - Cross-device progress sync
-  - Win streaks and statistics
-  - Comprehensive dashboard
-
-### 🎨 User Experience
-
-- **Modern Interface**
-
-  - Clean, card-based layout
-  - Beautiful gradient backgrounds
-  - Smooth transitions and animations
-  - Responsive design for all screen sizes
-
-- **Dark Mode**
-
-  - System-aware theme detection
-  - Manual toggle available
-  - Consistent styling across modes
-  - Optimized for eye comfort
-
-- **Toast Notifications**
-
-  - Non-intrusive feedback messages
-  - Color-coded by type (success, warning, error, info)
-  - Auto-dismiss with configurable duration
-  - Clean, modern design
-
-- **Mobile Optimization**
-  - Touch-friendly button sizes
-  - Optimized number pad layout
-  - Hamburger menu for dashboard (Production)
-  - Viewport-aware sizing
-
-### 🔧 Dev and Prod Mode
-
-#### Development Mode (Default)
-
-- **What You Get**:
-
-  - ✅ Full Sudoku game functionality
-  - ✅ All difficulty levels
-  - ✅ Timer and mistakes tracking
-  - ✅ Number pad and keyboard input
-  - ✅ Theme toggle (light/dark)
-  - ✅ Victory modal
-  - ✅ Toast notifications
-
-- **What's Excluded**:
-
-  - ❌ User authentication
-  - ❌ Dashboard sidebar
-  - ❌ Statistics tracking
-  - ❌ Game history
-  - ❌ Cloud synchronization
-  - ❌ Firebase dependency
-
-- **Use Cases**:
-  - Local development and testing
-  - Quick gameplay without setup
-  - Offline environments
-  - Privacy-focused usage
-  - Learning and customization
-
-#### Production Mode (Optional)
-
-- **Additional Features**:
-
-  - ✅ Email/Password authentication
-  - ✅ Google OAuth sign-in
-  - ✅ User profile with avatar
-  - ✅ Statistics dashboard (games played, win rate, streaks)
-  - ✅ Game history with timestamps
-  - ✅ Best times per difficulty
-  - ✅ Cross-device sync via Firebase
-  - ✅ Firestore security rules
-  - ✅ Mobile sidebar with overlay
-
-- **Requirements**:
-  - Firebase project setup
-  - `firebase-config.js` configuration
-  - Authentication enabled in Firebase Console
-  - Firestore database created
-
----
-
-## 🎯 How to Play
-
-### The Rules
+### Game Rules
 
 Mini Sudoku follows classic Sudoku rules on a 6×6 grid:
 
@@ -185,37 +57,35 @@ Mini Sudoku follows classic Sudoku rules on a 6×6 grid:
 2. **Column Rule**: Each column must contain numbers 1-6 with no repeats
 3. **Box Rule**: Each 2×3 box must contain numbers 1-6 with no repeats
 
-**Goal**: Fill all empty cells following these three rules to complete the puzzle!
+### Game Features
 
-### Controls & Input
+- **Real-Time Validation** - Instant feedback on incorrect moves with visual highlighting
+- **Timer** - Tracks elapsed time from game start
+- **Mistake Counter** - Tracks number of incorrect moves
+- **Game Actions**:
+  - **New Game**: Start fresh puzzle with confirmation
+  - **Check**: Validate current solution
+  - **Hint**: Reveal one correct cell
+  - **Solve**: Auto-complete puzzle (for learning)
+- **Input Methods**:
+  - Click/tap to select cells
+  - Keyboard input (1-6, Backspace, Delete)
+  - Touch-optimized number pad for mobile
+  - Erase button with visual feedback
+- **Visual Feedback**:
+  - Cell selection highlighting
+  - Initial cells marked with distinct styling
+  - User-entered numbers in accent color
+  - Proper 2×3 box borders with bold lines
+- **Victory Modal** - Shows completion time and mistakes
 
-| Action             | Method                                        |
-| ------------------ | --------------------------------------------- |
-| **Select Cell**    | Click/tap any empty or user-filled cell       |
-| **Enter Number**   | Type 1-6 on keyboard OR tap number pad button |
-| **Erase Number**   | Press Backspace/Delete OR tap ❌ button       |
-| **New Game**       | Click "New Game" button (with confirmation)   |
-| **Check Solution** | Click "Check" to validate current progress    |
-| **Get Hint**       | Click "Hint" to reveal one correct cell       |
-| **View Solution**  | Click "Solve" to auto-complete (ends game)    |
+### Production Mode Features
 
-### Visual Indicators
-
-- **Gray Cells**: Initial puzzle numbers (cannot be changed)
-- **Blue/Indigo Numbers**: Your entries (can be edited)
-- **Highlighted Cell**: Currently selected cell (blue background)
-- **Bold Lines**: 2×3 box boundaries
-- **Timer**: Elapsed time since game start (top bar)
-- **Mistakes**: Count of incorrect moves (top bar)
-
-### Game Flow
-
-1. Start a new game (select difficulty)
-2. Click a cell to select it
-3. Enter a number (1-6)
-4. Repeat until all cells filled
-5. Game auto-validates on completion
-6. Victory modal shows your time and mistakes!
+- **User Authentication** - Email/Password and Google OAuth sign-in
+- **Statistics Dashboard** - Games played, win rate, streaks, best times
+- **Game History** - Track all completed games with timestamps
+- **Cross-Device Sync** - Progress saved to Firebase Firestore
+- **User Profile** - Display name, avatar, and email
 
 ---
 
@@ -223,17 +93,16 @@ Mini Sudoku follows classic Sudoku rules on a 6×6 grid:
 
 ### Prerequisites
 
-- **Node.js** (v14 or higher) - For npm and build tools
+- **Node.js** (v14 or higher) - For npm and Vite
 - **Git** - For cloning the repository
 - **Modern Browser** - Chrome, Firefox, Safari, or Edge
-- **Python 3** (optional) - For local HTTP server (or use alternatives)
 
 ### Step-by-Step Installation
 
 #### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/mini-sudoku.git
+git clone https://github.com/gvenugo3/mini-sudoku
 cd mini-sudoku
 ```
 
@@ -249,353 +118,66 @@ This installs:
 - PostCSS and Autoprefixer
 - Jest (for testing)
 - Firebase SDK
+- Vite (development server)
 
-#### 3. Build CSS
-
-```bash
-npm run build:css:prod
-```
-
-This compiles Tailwind CSS with all necessary utility classes into `dist/output.css`.
-
-**Alternative** (watch mode for development):
+#### 3. Start Development Server
 
 ```bash
-npm run build:css
+npm run dev
 ```
 
-#### 4. Configure App Mode (Optional)
-
-By default, the app runs in **dev mode**. To change modes:
-
-1. **Create `.env.local`**:
-
-   ```bash
-   cp .env.local.example .env.local
-   ```
-
-2. **Edit `.env.local`** and set:
-
-   ```
-   APP_MODE=dev          # for dev mode (game only)
-   # or
-   APP_MODE=production   # for production mode (full app)
-   ```
-
-➡️ See [Dev vs Prod Mode Switching](#-dev-vs-prod-mode-switching) below
-
-3. **Build config** (auto-runs with `npm start`):
-   ```bash
-   npm run build:config
-   ```
-
-**⚠️ Note:** Only edit `.env.local`, never edit `config.js` directly (it's auto-generated).
-
-#### 5. Start Local Server
-
-**Option A: Python 3 (Built-in)**
-
-```bash
-npm start
-# Or manually:
-python3 -m http.server 8000
-```
-
-The `npm start` command automatically runs `build:config` before starting the server.
-
-**Option B: Node.js http-server**
-
-```bash
-npx http-server -p 8000
-```
-
-**Option C: VS Code Live Server**
-
-- Install "Live Server" extension
-- Right-click `index.html` → "Open with Live Server"
-
-#### 6. Open in Browser
-
-Navigate to:
-
-```
-http://localhost:8000
-```
+The app will start on `http://localhost:8000` and open automatically in your browser.
 
 **That's it!** The game runs in **Development Mode** by default. No Firebase setup needed! 🎉
 
-### Verify Installation
+### Development Mode (Default)
 
-You should see:
+By default, the app runs in **development mode**, which provides:
 
-- ✅ Mini Sudoku game loads
-- ✅ Console: `🔧 Running in DEV mode`
-- ✅ Game spans full screen (no sidebar)
-- ✅ No dashboard or authentication UI
-- ✅ All game functions work (new game, check, hint, solve)
-- ✅ Theme toggle works
-- ✅ Hot reload works (edit files and see instant changes)
+- ✅ Full Sudoku game functionality
+- ✅ All difficulty levels (Easy, Medium, Hard)
+- ✅ Timer and mistakes tracking
+- ✅ Number pad and keyboard input
+- ✅ Theme toggle (light/dark)
+- ✅ Victory modal
+- ✅ Toast notifications
+- ❌ No authentication required
+- ❌ No dashboard or statistics
+- ❌ No Firebase dependency
 
----
+### Production Mode Setup
 
-## 🧪 Dev and Testing
+(To track your progress)
 
-### Development Commands
+> **💡 Quick Start:** Don't want to go through the complete setup? Try the [live demo](https://mini-sudoku-seven.vercel.app/) to see all features in action!
 
-```bash
-# Install dependencies
-npm install
+Enable full features with Firebase integration:
 
-# Start development server (with hot reload)
-npm run dev
-# or
-npm start
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-
-# Run tests
-npm test
-
-# Run tests in watch mode
-npm run test:watch
-```
-
-### Project Structure
-
-```
-mini-sudoku/
-├── src/
-│   └── input.css              # Tailwind source CSS
-├── dist/
-│   └── output.css             # Compiled CSS (for non-Vite builds)
-├── dist-build/                # Vite production build output
-├── __tests__/
-│   └── sudoku.test.js         # Jest unit tests
-├── .env.local.example         # Template for environment variables
-├── .env.local                 # Your environment config (create this, gitignored)
-├── index.html                 # Main HTML file
-├── app.js                     # Game controller & UI logic
-├── sudoku.js                  # Puzzle generation & validation (ES module)
-├── auth.js                    # Firebase authentication manager (ES module)
-├── toast.js                   # Toast notification system (ES module)
-├── firebase-config.js         # Firebase initialization (reads from .env.local)
-├── vite.config.js             # Vite configuration
-├── tailwind.config.js         # Tailwind configuration
-├── postcss.config.js          # PostCSS configuration
-├── package.json               # Dependencies and scripts
-├── .gitignore                 # Git ignore rules
-├── CHANGELOG.md               # Version history
-├── build-config.js            # DEPRECATED - no longer used
-└── README.md                  # This file
-```
-
-### Testing
-
-The project uses **Jest** for unit testing.
-
-#### Run All Tests
-
-```bash
-npm test
-```
-
-#### Watch Mode (Auto-rerun on changes)
-
-```bash
-npm run test:watch
-```
-
-#### Test Coverage
-
-Current tests cover:
-
-- ✅ Puzzle generation algorithms
-- ✅ Board validation logic
-- ✅ Move legality checking
-- ✅ Solution verification
-
-#### Writing Tests
-
-Add tests in `__tests__/` directory:
-
-```javascript
-// Example test
-describe("Sudoku Validation", () => {
-  test("should detect invalid rows", () => {
-    const sudoku = new Sudoku();
-    // Test implementation
-  });
-});
-```
-
-### Debugging
-
-#### Browser Console
-
-- **Dev Mode**: `🔧 Running in DEV mode - Auth and Dashboard disabled`
-- **Prod Mode**: `🚀 Running in PRODUCTION mode - Full features enabled`
-
-#### Common Issues
-
-**CSS not loading?**
-
-```bash
-npm run build:css:prod
-```
-
-**Port 8000 already in use?**
-
-```bash
-# Find and kill process
-lsof -ti:8000 | xargs kill
-# Or use different port
-python3 -m http.server 3000
-```
-
-**Firebase errors in dev mode?**
-
-- This is expected! Dev mode skips Firebase initialization
-- Check console for "🔧 Dev mode: Skipping Firebase initialization"
-
-### Code Style
-
-- **JavaScript**: ES6+ features, modular design
-- **Indentation**: 2 spaces
-- **Comments**: JSDoc style for functions
-- **Naming**: camelCase for variables/functions, PascalCase for classes
-- **CSS**: Tailwind utility classes, minimal custom CSS
-
----
-
-## 🔄 Dev vs Prod Mode Switching
-
-The app uses **Vite environment variables** to switch between development and production modes.
-
-### ⚙️ Configuration Workflow
-
-**⚠️ IMPORTANT: All configuration is in `.env.local` file!**
-
-1. **Edit `.env.local`** - Change `VITE_APP_MODE` value
-2. **Restart dev server** - Stop (`Ctrl+C`) and run `npm run dev` again
-3. **Vite reads the environment** - Injects variables at build time
-
-**All configuration in ONE file:** `.env.local`
-
-### Quick Reference
-
-| File                 | Purpose                        | Edit?                  |
-| -------------------- | ------------------------------ | ---------------------- |
-| `.env.local`         | Your environment variables     | ✅ **YES** - Edit this |
-| `.env.local.example` | Template for `.env.local`      | ❌ No - Just copy it   |
-| `firebase-config.js` | Firebase init (reads from env) | ❌ No - Auto-reads env |
-| `vite.config.js`     | Vite bundler config            | ❌ No - Unless needed  |
-
-### How It Works
-
-```
-.env.local (you edit this)
-    ↓
-Vite reads environment variables
-    ↓
-import.meta.env.VITE_APP_MODE available in code
-    ↓
-UI adjusts based on mode
-```
-
-### Current Mode: Development (Default)
-
-By default, the app runs in **development mode**, which provides a clean Sudoku game without any authentication or cloud features.
-
-### Switching to Production Mode
-
-#### Step 1: Configure Environment Variables
-
-**⚠️ All configuration happens in `.env.local` - Firebase credentials are NEVER in code!**
-
-1. **Edit `.env.local`** and update:
-
-```env
-# Set mode to production
-VITE_APP_MODE=production
-
-# Add your Firebase credentials (get from Firebase Console)
-VITE_FIREBASE_API_KEY=your_api_key_here
-VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
-VITE_FIREBASE_PROJECT_ID=your-project-id
-VITE_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-VITE_FIREBASE_APP_ID=your_app_id
-VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
-```
-
-2. **Restart the dev server:**
-   ```bash
-   # Stop current server (Ctrl+C), then:
-   npm run dev
-   ```
-
-**⚠️ Important:** Vite only reads `.env.local` on startup. You must restart the server after changing environment variables.
-
-#### Step 2: Setup Firebase Project
-
-**2a. Create Firebase Project**
+#### Step 1: Create Firebase Project
 
 1. Go to [Firebase Console](https://console.firebase.google.com/)
 2. Click "Add Project"
 3. Follow the setup wizard
 4. Add a web app to your project
 
-**2b. Enable Services**
+#### Step 2: Enable Firebase Services
 
-1. **Authentication**:
+**2a. Enable Authentication**
 
-   - Go to Authentication → Sign-in method
-   - Enable "Email/Password"
-   - Enable "Google" (optional)
+1. Go to **Authentication** → **Sign-in method**
+2. Enable **"Email/Password"**
+3. Enable **"Google"** (optional, for Google sign-in)
 
-2. **Firestore Database**:
-   - Go to Firestore Database
-   - Click "Create database"
-   - Start in production mode
-   - Choose a location
+**2b. Create Firestore Database**
 
-**2c. Get Your Credentials**
+1. Go to **Firestore Database**
+2. Click **"Create database"**
+3. Start in **production mode**
+4. Choose a location (e.g., `us-central1`)
 
-1. Go to **Project Settings** → **General**
-2. Scroll to **"Your apps"**
-3. Click your **Web app**
-4. Copy the **configuration values**
+**2c. Configure Firestore Security Rules**
 
-**2d. Add to `.env.local`**
-
-Paste your Firebase credentials into `.env.local`:
-
-```env
-VITE_APP_MODE=production
-
-# Your actual Firebase credentials
-VITE_FIREBASE_API_KEY=AIzaSyC...
-VITE_FIREBASE_AUTH_DOMAIN=your-app.firebaseapp.com
-VITE_FIREBASE_PROJECT_ID=your-app
-VITE_FIREBASE_STORAGE_BUCKET=your-app.appspot.com
-VITE_FIREBASE_MESSAGING_SENDER_ID=123456789
-VITE_FIREBASE_APP_ID=1:123456789:web:abc123
-VITE_FIREBASE_MEASUREMENT_ID=G-ABCD123
-```
-
-**⚠️ Security:**
-
-- `.env.local` is in `.gitignore` - your credentials are safe
-- NEVER commit credentials to version control
-- Firebase credentials stay in `.env.local` ONLY
-
-#### Step 3: Configure Firestore Security Rules
-
-In Firebase Console → Firestore Database → Rules:
+Go to **Firestore Database** → **Rules** and paste:
 
 ```javascript
 rules_version = '2';
@@ -614,14 +196,45 @@ service cloud.firestore {
 }
 ```
 
-Click "Publish" to save the rules.
+Click **"Publish"** to save the rules.
 
-#### Step 4: Restart and Test
+**2d. Get Firebase Credentials**
 
-**Restart the dev server:**
+1. Go to **Project Settings** → **General**
+2. Scroll to **"Your apps"**
+3. Click your **Web app**
+4. Copy the **configuration values**
+
+#### Step 3: Configure Environment Variables
+
+1. **Create `.env.local` file** in the project root:
 
 ```bash
-# Stop with Ctrl+C, then:
+# Application Mode: 'dev' or 'production'
+VITE_APP_MODE=production
+
+# Firebase Configuration (Required for production mode)
+VITE_FIREBASE_API_KEY=your_api_key_here
+VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your-project-id
+VITE_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
+```
+
+2. **Replace placeholders** with your actual Firebase credentials
+
+**⚠️ Security Notes:**
+
+- `.env.local` is in `.gitignore` - your credentials are safe
+- NEVER commit credentials to version control
+- Firebase credentials stay in `.env.local` ONLY
+
+#### Step 4: Restart Development Server
+
+```bash
+# Stop current server (Ctrl+C), then:
 npm run dev
 ```
 
@@ -631,7 +244,6 @@ npm run dev
 🚀 Running in PRODUCTION mode
 🔥 Firebase app initialized
 ✅ Firebase initialized successfully
-📱 Production Mode: Full dashboard enabled
 ```
 
 **Hard refresh browser:**
@@ -639,50 +251,104 @@ npm run dev
 - **Mac**: `Cmd + Shift + R`
 - **Windows/Linux**: `Ctrl + Shift + F5`
 
-### Production Mode Verification
+#### Step 5: Verify Production Mode
 
 After switching, verify these features work:
 
-- ✅ Dashboard sidebar appears on left (desktop) or hamburger menu (mobile)
+- ✅ Dashboard sidebar appears (desktop) or hamburger menu (mobile)
 - ✅ "Sign In to Save Progress" button visible
-- ✅ Click sign-in button opens authentication modal
+- ✅ Authentication modal opens
 - ✅ Email/Password sign-up and sign-in work
 - ✅ Google OAuth sign-in works (if enabled)
-- ✅ After login, dashboard shows statistics
+- ✅ Dashboard shows statistics after login
 - ✅ Game history populates after completing games
 - ✅ Sign out works correctly
 
-### Switching Back to Dev Mode
+---
 
-To return to development mode:
+## 🔄 Dev vs Prod Mode Switching
 
-1. **Edit `.env.local`** and change:
+The app uses **Vite environment variables** to switch between development and production modes.
 
-   ```env
-   VITE_APP_MODE=dev
-   ```
+### Configuration Workflow
+
+**⚠️ IMPORTANT: All configuration is in `.env.local` file!**
+
+1. **Edit `.env.local`** - Change `VITE_APP_MODE` value
+2. **Restart dev server** - Stop (`Ctrl+C`) and run `npm run dev` again
+3. **Vite reads the environment** - Injects variables at build time
+
+**All configuration in ONE file:** `.env.local`
+
+### Quick Reference
+
+| File                 | Purpose                        | Edit?                  |
+| -------------------- | ------------------------------ | ---------------------- |
+| `.env.local`         | Your environment variables     | ✅ **YES** - Edit this |
+| `firebase-config.js` | Firebase init (reads from env) | ❌ No - Auto-reads env |
+| `vite.config.js`     | Vite bundler config            | ❌ No - Unless needed  |
+
+### How It Works
+
+```
+.env.local (you edit this)
+    ↓
+Vite reads environment variables
+    ↓
+import.meta.env.VITE_APP_MODE available in code
+    ↓
+UI adjusts based on mode
+```
+
+### Switching to Production Mode
+
+1. **Edit `.env.local`** and set:
+
+```env
+VITE_APP_MODE=production
+
+# Add your Firebase credentials
+VITE_FIREBASE_API_KEY=...
+VITE_FIREBASE_AUTH_DOMAIN=...
+# ... (all other Firebase config)
+```
 
 2. **Restart dev server:**
 
-   ```bash
-   # Stop with Ctrl+C, then:
-   npm run dev
-   ```
+```bash
+npm run dev
+```
 
-3. **Hard refresh browser** (`Cmd + Shift + R`)
+3. **Hard refresh browser** (`Cmd + Shift + R` or `Ctrl + Shift + F5`)
+
+### Switching Back to Dev Mode
+
+1. **Edit `.env.local`** and change:
+
+```env
+VITE_APP_MODE=dev
+```
+
+2. **Restart dev server:**
+
+```bash
+npm run dev
+```
+
+3. **Hard refresh browser**
 
 **Console should show:**
 
 ```
 🔧 Running in DEV mode
-📱 Dev Mode: Optimizing for full-screen game experience
+🔧 Dev mode: Skipping Firebase initialization
 ```
 
 The dashboard and authentication will be completely hidden.
 
 **⚠️ Remember:** Restart the dev server whenever you change `.env.local`!
 
-### Mode Comparison Table
+### Mode Comparison
 
 | Feature               | Dev Mode                    | Prod Mode               |
 | --------------------- | --------------------------- | ----------------------- |
@@ -698,8 +364,6 @@ The dashboard and authentication will be completely hidden.
 | **Cloud Sync**        | ❌ No                       | ✅ Yes                  |
 | **Firebase Required** | ❌ No setup needed          | ✅ Yes (in .env.local)  |
 | **Setup Time**        | ⚡ Instant (30 seconds)     | ⏱️ 5-10 min             |
-| **Hot Reload**        | ✅ Yes (Vite)               | ✅ Yes (Vite)           |
-| **Best For**          | Pure gameplay, local dev    | Full experience         |
 
 ### Environment Variables Reference
 
@@ -726,6 +390,27 @@ VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
 - `.env.local` is gitignored - safe for credentials
 - Never commit credentials to version control
 
+### Common Issues
+
+**Firebase errors in dev mode?**
+
+- This is expected! Dev mode skips Firebase initialization
+- Check console for "🔧 Dev mode: Skipping Firebase initialization"
+
+**Port 8000 already in use?**
+
+```bash
+# Find and kill process
+lsof -ti:8000 | xargs kill
+# Or change port in vite.config.js
+```
+
+**Google sign-in not working?**
+
+- Ensure domain is added to Firebase Console → Authentication → Settings → Authorized domains
+- Enable Google provider in Firebase Console → Authentication → Sign-in method
+- Check browser console for specific error messages
+
 ---
 
 ## 🤝 Contributing
@@ -745,20 +430,6 @@ Found a bug? Please open an issue with:
 - **Environment**: Browser, OS, dev/prod mode
 - **Screenshots**: If applicable
 
-**Example**:
-
-```
-Title: Timer doesn't reset on new game
-
-Steps:
-1. Start a game in Medium difficulty
-2. Wait 30 seconds
-3. Click "New Game" and confirm
-4. Timer shows 00:30 instead of 00:00
-
-Environment: Chrome 120, macOS, Dev Mode
-```
-
 #### 2. Suggest Features
 
 Have an idea? Open an issue with:
@@ -769,7 +440,7 @@ Have an idea? Open an issue with:
 
 #### 3. Submit Pull Requests
 
-**Process**:
+**Process:**
 
 1. **Fork** the repository
 2. **Clone** your fork
@@ -794,8 +465,8 @@ Have an idea? Open an issue with:
 5. **Test your changes**
 
    ```bash
-   npm run build:css:prod
    npm test
+   npm run dev
    # Test manually in browser
    ```
 
@@ -832,7 +503,7 @@ Have an idea? Open an issue with:
 
 #### Code Style
 
-**JavaScript**:
+**JavaScript:**
 
 - Use ES6+ features (arrow functions, destructuring, etc.)
 - 2-space indentation
@@ -841,7 +512,7 @@ Have an idea? Open an issue with:
 - Descriptive variable names
 - Add JSDoc comments for functions
 
-**Example**:
+**Example:**
 
 ```javascript
 /**
@@ -856,14 +527,14 @@ function isValidMove(row, col, num) {
 }
 ```
 
-**HTML/CSS**:
+**HTML/CSS:**
 
 - Use Tailwind utility classes
 - Semantic HTML5 tags
 - Accessible markup (ARIA labels where needed)
 - Mobile-first responsive design
 
-**Git Commits**:
+**Git Commits:**
 
 - Clear, concise commit messages
 - Use conventional commit format
@@ -873,7 +544,7 @@ function isValidMove(row, col, num) {
 #### Testing
 
 - Write tests for new features
-- Ensure existing tests pass
+- Ensure existing tests pass (`npm test`)
 - Test in multiple browsers
 - Test in both dev and prod modes
 - Test responsive behavior on mobile
@@ -882,31 +553,7 @@ function isValidMove(row, col, num) {
 
 - Update README.md if adding features
 - Add JSDoc comments for new functions
-- Update CHANGELOG.md for version changes
 - Include code examples where helpful
-
-### Areas for Contribution
-
-**Good First Issues**:
-
-- 🎨 UI improvements (colors, spacing, animations)
-- 📝 Documentation enhancements
-- 🐛 Bug fixes
-- ♿ Accessibility improvements
-- 🌐 Internationalization (i18n)
-
-**Feature Ideas**:
-
-- 🔊 Sound effects and music
-- 🏆 Achievement system
-- 📊 Global leaderboard
-- 📅 Daily challenges
-- 🔗 Puzzle sharing (export/import)
-- ↩️ Undo/Redo functionality
-- 💡 Hint explanations (why this number?)
-- 👥 Multiplayer challenges
-- 🎨 Theme customization
-- 📱 PWA support (offline gameplay)
 
 ### Code of Conduct
 
@@ -916,153 +563,13 @@ function isValidMove(row, col, num) {
 - Focus on the code, not the person
 - Help others learn and grow
 
-### Questions?
-
-- Open a discussion on GitHub
-- Comment on relevant issues
-- Check existing documentation first
-
 **Thank you for contributing!** 🙏
-
----
-
-## 🚀 Future Enhancements
-
-### Planned Features
-
-#### 🎮 Gameplay
-
-- [ ] **Undo/Redo System**
-
-  - Step backward/forward through moves
-  - Visual history of changes
-  - Keyboard shortcuts (Ctrl+Z / Ctrl+Y)
-
-- [ ] **Advanced Hints**
-
-  - Explain why a number goes in a cell
-  - Highlight conflicting cells
-  - Progressive hint system (easy → hard)
-
-- [ ] **Puzzle Import/Export**
-
-  - Share puzzles with friends
-  - Custom puzzle creation
-  - QR code generation for sharing
-
-- [ ] **Difficulty Customization**
-  - User-defined difficulty (10-30 cells removed)
-  - Puzzle complexity rating
-  - Pattern-based generation options
-
-#### 🏆 Achievements & Progression
-
-- [ ] **Achievement System**
-
-  - Unlock badges for milestones
-  - Special achievements (speed runs, no mistakes, etc.)
-  - Progress tracking dashboard
-
-- [ ] **Daily Challenges**
-
-  - One puzzle per day for all users
-  - Global completion statistics
-  - Special rewards for streaks
-
-- [ ] **Global Leaderboard**
-  - Best times per difficulty
-  - Weekly/monthly rankings
-  - Friends-only leaderboards
-
-#### 🎨 Customization
-
-- [ ] **Theme Gallery**
-
-  - Multiple color schemes
-  - Custom theme creator
-  - Import/export themes
-
-- [ ] **Grid Size Options**
-
-  - 4×4 (beginner mode)
-  - 9×9 (classic Sudoku)
-  - 12×12 (expert mode)
-
-- [ ] **Sound & Music**
-  - Optional sound effects
-  - Background music
-  - Customizable audio settings
-  - Volume controls
-
-#### 👥 Social Features
-
-- [ ] **Multiplayer**
-
-  - Race mode (same puzzle, fastest wins)
-  - Co-op mode (solve together)
-  - Asynchronous challenges
-
-- [ ] **Friends System**
-
-  - Add friends within the app
-  - Compare statistics
-  - Send challenges
-  - Activity feed
-
-- [ ] **Social Sharing**
-  - Share victories on social media
-  - Achievement sharing
-  - Puzzle recommendations
-
-#### 📱 Technical Improvements
-
-- [ ] **Progressive Web App (PWA)**
-
-  - Install as standalone app
-  - Offline functionality
-  - Push notifications for challenges
-
-- [ ] **Performance Optimizations**
-
-  - Lazy loading for dashboard
-  - Service worker caching
-  - Optimized bundle size
-
-- [ ] **Internationalization (i18n)**
-
-  - Multi-language support
-  - Localized number formats
-  - RTL language support
-
-- [ ] **Accessibility Enhancements**
-  - Screen reader improvements
-  - Keyboard navigation enhancements
-  - High contrast mode
-  - Font size adjustments
-
-#### 🤖 AI & Analytics
-
-- [ ] **AI Opponent**
-
-  - Solve puzzles step-by-step
-  - Learn from player strategies
-  - Difficulty-adaptive hints
-
-- [ ] **Analytics Dashboard**
-  - Detailed play patterns
-  - Improvement metrics
-  - Time-spent analysis
-  - Error frequency tracking
-
-### Community Suggestions
-
-Have an idea? [Open an issue](https://github.com/YOUR_USERNAME/mini-sudoku/issues) with the `enhancement` label!
 
 ---
 
 ## 📝 License
 
-This project is licensed under the **MIT License** - see below for details.
+This project is licensed under the **MIT License**.
 
 ```
 MIT License
@@ -1088,79 +595,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### What This Means
-
-✅ **You CAN**:
-
-- Use this project commercially
-- Modify the source code
-- Distribute your modifications
-- Use it privately
-- Sublicense the code
-
-❌ **You CANNOT**:
-
-- Hold the authors liable
-- Use the authors' names for endorsement without permission
-
-📋 **You MUST**:
-
-- Include the copyright notice
-- Include the license text
-
 ---
 
-## 🙏 Acknowledgements
-
-### Technologies & Libraries
-
-- **[Tailwind CSS](https://tailwindcss.com/)** - For the amazing utility-first CSS framework that makes styling a breeze
-- **[Firebase](https://firebase.google.com/)** - For providing robust backend services, authentication, and cloud storage
-- **[Jest](https://jestjs.io/)** - For the powerful JavaScript testing framework
-- **[PostCSS](https://postcss.org/)** - For CSS transformation and build pipeline
-- **[JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)** - For making the web interactive
-
-### Inspiration & Resources
+### Inspiration
 
 - **Classic Sudoku** - The timeless puzzle game that inspired this project
-- **Web Dev Community** - For countless tutorials, guides, and open-source examples
-- **Stack Overflow** - For helping solve tricky implementation challenges
-- **MDN Web Docs** - For comprehensive JavaScript and Web API documentation
-
-### Special Thanks
-
-- **Alpha Testers** - For providing valuable feedback during development
-- **Contributors** - Everyone who has submitted pull requests, reported bugs, or suggested features
-- **Players** - For playing the game and making this project worthwhile
-- **You** - For checking out this project! 🎉
-
-### Open Source
-
-This project stands on the shoulders of giants. We're grateful to all open-source maintainers who make projects like this possible. Special recognition to:
-
-- Tailwind Labs team for Tailwind CSS v4
-- Firebase team at Google
-- All npm package maintainers we depend on
-
-### Support & Feedback
-
-If you find this project helpful:
-
-- ⭐ **Star the repository** on GitHub
-- 🐦 **Share it** with friends and on social media
-- 🐛 **Report bugs** to help improve it
-- 💡 **Suggest features** to make it better
-- 🤝 **Contribute code** to add new features
-
----
-
-## 📧 Contact & Support
-
-- **📂 Repository**: [GitHub](https://github.com/YOUR_USERNAME/mini-sudoku)
-- **🐛 Bug Reports**: [Open an Issue](https://github.com/YOUR_USERNAME/mini-sudoku/issues/new?template=bug_report.md)
-- **💡 Feature Requests**: [Open an Issue](https://github.com/YOUR_USERNAME/mini-sudoku/issues/new?template=feature_request.md)
-- **📖 Documentation**: [View README](https://github.com/YOUR_USERNAME/mini-sudoku#readme)
-- **📝 Changelog**: [CHANGELOG.md](./CHANGELOG.md)
+- **[LinkedIn](https://www.linkedin.com/)** - For professional networking and learning resources
 
 ---
 
@@ -1169,10 +609,6 @@ If you find this project helpful:
 **Made with ❤️ and ☕**
 
 **Enjoy the game? Give it a ⭐!**
-
-[⬆ Back to Top](#-mini-sudoku---66-puzzle-game)
-
----
 
 _Version 2.1.0 - Last Updated: November 2024_
 
