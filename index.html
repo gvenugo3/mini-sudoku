@@ -222,6 +222,14 @@
           </svg>
         </button>
 
+        <!-- Dashboard Button -->
+        <button id="dashboard-btn" class="w-full mb-3 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 p-3 rounded-xl shadow-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-all flex items-center gap-3 font-semibold">
+          <svg class="w-6 h-6 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+          </svg>
+          Dashboard
+        </button>
+
         <!-- User Profile Card -->
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-3 lg:p-4">
           <div id="user-profile-guest" class="text-center">
@@ -695,6 +703,103 @@
           </ul>
         </div>
       </main>
+    </div>
+
+    <!-- Dashboard Modal -->
+    <div id="dashboard-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[80] flex items-center justify-center p-4 animate-fade-in">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto transform transition-all animate-slide-up flex flex-col">
+        
+        <!-- Header -->
+        <div class="p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center sticky top-0 bg-white dark:bg-gray-800 z-10">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            <svg class="w-8 h-8 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+            </svg>
+            Statistics Dashboard
+          </h2>
+          <button id="close-dashboard-btn" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Content -->
+        <div class="p-6 space-y-8">
+          
+          <!-- Summary Cards -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-indigo-50 dark:bg-gray-700 p-4 rounded-xl">
+              <p class="text-sm text-gray-600 dark:text-gray-400 font-medium">Games Played</p>
+              <p id="dash-games-played" class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">0</p>
+            </div>
+            <div class="bg-green-50 dark:bg-gray-700 p-4 rounded-xl">
+              <p class="text-sm text-gray-600 dark:text-gray-400 font-medium">Win Rate</p>
+              <p id="dash-win-rate" class="text-2xl font-bold text-green-600 dark:text-green-400">0%</p>
+            </div>
+            <div class="bg-yellow-50 dark:bg-gray-700 p-4 rounded-xl">
+              <p class="text-sm text-gray-600 dark:text-gray-400 font-medium">Best Streak</p>
+              <p id="dash-best-streak" class="text-2xl font-bold text-yellow-600 dark:text-yellow-400">0</p>
+            </div>
+            <div class="bg-purple-50 dark:bg-gray-700 p-4 rounded-xl">
+              <p class="text-sm text-gray-600 dark:text-gray-400 font-medium">Total Time</p>
+              <p id="dash-total-time" class="text-2xl font-bold text-purple-600 dark:text-purple-400">0h 0m</p>
+            </div>
+          </div>
+
+          <!-- Charts & Best Times -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Best Times -->
+            <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-6">
+              <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Personal Records</h3>
+              <div class="space-y-4">
+                <div class="flex justify-between items-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+                  <span class="font-medium text-gray-700 dark:text-gray-300">Easy</span>
+                  <span id="dash-best-easy" class="font-bold text-indigo-600 dark:text-indigo-400">--:--</span>
+                </div>
+                <div class="flex justify-between items-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+                  <span class="font-medium text-gray-700 dark:text-gray-300">Medium</span>
+                  <span id="dash-best-medium" class="font-bold text-indigo-600 dark:text-indigo-400">--:--</span>
+                </div>
+                <div class="flex justify-between items-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+                  <span class="font-medium text-gray-700 dark:text-gray-300">Hard</span>
+                  <span id="dash-best-hard" class="font-bold text-indigo-600 dark:text-indigo-400">--:--</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Achievements -->
+            <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-6">
+              <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Achievements</h3>
+              <div id="achievements-grid" class="grid grid-cols-2 gap-3">
+                <!-- Achievements injected by JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent History -->
+          <div>
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Recent History</h3>
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
+              <table class="w-full text-left">
+                <thead class="bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-sm">
+                  <tr>
+                    <th class="p-4 font-medium">Date</th>
+                    <th class="p-4 font-medium">Difficulty</th>
+                    <th class="p-4 font-medium">Time</th>
+                    <th class="p-4 font-medium">Mistakes</th>
+                    <th class="p-4 font-medium">Result</th>
+                  </tr>
+                </thead>
+                <tbody id="dash-history-body" class="divide-y divide-gray-100 dark:divide-gray-700 text-sm text-gray-700 dark:text-gray-300">
+                  <!-- History rows injected by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
 
     <!-- Victory Modal -->
