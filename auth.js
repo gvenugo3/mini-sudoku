@@ -192,6 +192,7 @@ class AuthManager {
           medium: null,
           hard: null,
         },
+        achievements: [], // Initialize achievements array
       },
     });
   }
@@ -258,8 +259,25 @@ class AuthManager {
         await updateDoc(userRef, { stats: updatedStats });
         return { success: true, stats: updatedStats };
       }
+      return { success: false, error: "User document not found" };
     } catch (error) {
       console.error("Error updating user stats:", error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  /**
+   * Save full user stats (including achievements)
+   */
+  async saveUserStats(stats) {
+    if (!this.isConfigured || !this.currentUser) return;
+
+    try {
+      const userRef = doc(this.db, "users", this.currentUser.uid);
+      await updateDoc(userRef, { stats: stats });
+      return { success: true };
+    } catch (error) {
+      console.error("Error saving user stats:", error);
       return { success: false, error: error.message };
     }
   }

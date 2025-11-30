@@ -225,6 +225,9 @@ class SudokuGame {
     await this.loadUserStats();
     await this.loadGameHistory();
 
+    // Sync achievements (backfill for existing users)
+    await statsManager.syncAchievements();
+
     toast.success(`Welcome back, ${user.displayName || "User"}!`);
   }
 

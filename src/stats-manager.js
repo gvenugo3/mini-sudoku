@@ -129,10 +129,22 @@ class StatsManager {
       if (!authManager.isAuthenticated()) {
         localStorage.setItem(this.STORAGE_KEY, JSON.stringify(stats));
       } else {
-        // For auth, we might need a separate call to save achievements if not part of standard stats
-        // For now, assuming stats object in Firestore can hold achievements
-        // This is a simplification; in a real app, we'd update Firestore here too
+        // For auth, save to Firestore
+        await authManager.saveUserStats(stats);
       }
+      return true; // Changes made
+    }
+    return false; // No changes
+  }
+
+  /**
+   * Sync achievements for existing users
+   * Backfills achievements based on history/stats
+   */
+  async syncAchievements() {
+    const stats = await this.getStats();
+    if (stats) {
+      await this.checkAchievements(stats);
     }
   }
 
